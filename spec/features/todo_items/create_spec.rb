@@ -23,4 +23,26 @@ describe "Adding todo items" do
 		end
 	end
 
+	it "displays an error when no content is entered" do
+		visit_todo_list(todo_list)
+		click_link "New Todo Item"
+		fill_in "Content", with: ""
+		click_button "Save"
+		within("div.flash") do
+			expect(page).to have_content("There was a problem adding the todo list item")
+		end
+		expect(page).to have_content("Content can't be blank")
+	end
+
+	it "displays an error when less than two characters are entered" do
+		visit_todo_list(todo_list)
+		click_link "New Todo Item"
+		fill_in "Content", with: "1"
+		click_button "Save"
+		within("div.flash") do
+			expect(page).to have_content("There was a problem adding the todo list item")
+		end
+		expect(page).to have_content("Content is too short")
+	end
+
 end
